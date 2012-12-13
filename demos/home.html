@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<meta content="utf-8" http-equiv="encoding">
+
+		<title>jQuery Template - Home</title>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+		<script type="text/javascript" src="assets/prettify.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="assets/style.css" />
+		<link rel="stylesheet" type="text/css" href="assets/prettify.css" />
+	</head>
+	<body onload="prettyPrint();">
+		<div class="marginTB5px">
+			<div class="header">jQuery Template Plugin</div>
+			<div class="marginTB5px explanation">
+				A simple jQuery plugin which generates dynamic html content using the template and the JSON object passed.<br/><br/>
+
+				Below is the syntax:
+<pre class="prettyprint">
+$.fn.jsTemplate("template", "data - JSON or Array", "property");
+</pre>
+				<div class="downlaod-heading">HTML Template</div>
+				This is a simple HTML that would consist of markup's known as template tags. A template tag can be as simple as {@:name}
+				(where 'name' is one of the properties in the json object)<br/><br/>
+				Below is an example of how a template would look like: 
+<pre class="prettyprint">
+&lt;div id="{@:id}" class="row"&gt;&lt;div&gt;{@:name}&lt;/div&gt;&lt;div&gt;{@:email}&lt;/div&gt;&lt;/div&gt;
+</pre>
+				<div class="downlaod-heading">Data - (JSON or Array)</div>
+				The data passed in can either be a simple JSON or a String of Array.<br/><br/>
+				Data as a simple JSON could look as below:
+<pre class="prettyprint">
+{
+    {
+        "id": 12345,
+        "name": "User One",
+        "email": "user.one@email.com"
+    },{
+        "id": 23456,
+        "name": "User Two",
+        "email": "user.two@email.com"
+    },{
+        "id": 34567,
+        "name": "User Three",
+        "email": "user.three@email.com"
+    }
+    .
+    .
+    .
+}
+</pre>
+				Data as a String of Array could look as below:
+<pre class="prettyprint">
+["User One", "User Two", "User Three", ... "User N"]
+</pre>
+				<div class="downlaod-heading">Property (optional)</div>
+				This is an optional property that has to be used if the passed in data is an Array of String.
+				This is nothing but an indication as to which template tag needs to be replaced with the values
+				of the Array.<br/><br/>
+				If the template being passed in is as below:
+<pre class="prettyprint">
+&lt;div class="row"&gt;&lt;div&gt;{@:name}&lt;/div&gt;&lt;/div&gt;
+</pre>
+				And, the data is an Array of String as below:
+<pre class="prettyprint">
+["User One", "User Two", "User Three", ... "User N"]
+</pre>
+				Then, the property parameter would be <b>name</b><br/><br/>
+
+				<div class="downlaod-heading">Examples</div>
+				Example-1: JSON as input data.
+<pre class="prettyprint">
+$.fn.jsTemplate('&lt;div id="{@:id}" class="row"&gt;&lt;div&gt;{@:name}&lt;/div&gt;&lt;div&gt;{@:email}&lt;/div&gt;&lt;/div&gt;', {
+    {
+        "id": 12345,
+        "name": "User One",
+        "email": "user.one@email.com"
+    },{
+        "id": 23456,
+        "name": "User Two",
+        "email": "user.two@email.com"
+    },{
+        "id": 34567,
+        "name": "User Three",
+        "email": "user.three@email.com"
+    }
+});
+</pre>
+				Example-2: Array of String as input data.
+<pre class="prettyprint">
+$.fn.jsTemplate('&lt;div class="row"&gt;&lt;div&gt;{@:name}&lt;/div&gt;&lt;/div&gt;', ["User One", "User Two", "User Three"], "name");
+</pre>
+
+			</div>
+		</div>
+	</body>
+</html>
