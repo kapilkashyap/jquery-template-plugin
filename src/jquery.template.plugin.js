@@ -1,12 +1,23 @@
+/*
+ * jQuery Template Plugin
+ * Copyright (c) 2015 Kapil Kashyap
+ *
+ * Depends:
+ *   - jQuery 1.6+
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   - http://www.opensource.org/licenses/mit-license.php
+ *   - http://www.gnu.org/licenses/gpl.html
+ */
 (function($) {
 	$.extend($.fn, {
-		jsTemplate: function( template, jsonObjects, prop ) {
-			if(!template || !jsonObjects) {
+		jsTemplate: function( config ) {
+			if(!config.template || !config.jsonObjects) {
 				var errorMsg = '';
-				if(!template) {
+				if(!config.template) {
 					errorMsg += 'template is required.\n';
 				}
-				if(!jsonObjects) {
+				if(!config.jsonObjects) {
 					errorMsg += 'jsonObjects is required.';
 				}
 				
@@ -18,26 +29,61 @@
 				return;
 			}
 
-			var constructedTemplate = [];
+			config.highlight = $.extend({
+				apply: false,
+				markup: "<u>,</u>",
+				value: ""
+			}, config.highlight || {});
 
-			$( jsonObjects ).each(function(index, item) {
-				var templateClone = $( "<div></div>" ).html( template ).html();
+			var constructedTemplate = [],
+				matchedText = null,
+	    		highlightedText = null,
+	    		singleValue = (config.highlight.value.length === 1),
+	    		escapedRegExp = config.highlight.value.replace(/[\-\[\]{}()*+?.\\\^$#\s]/g,"\\$&"),
+	    		highlightRegExp = new RegExp(escapedRegExp, "ig"),
+	    		highlightTextMarkup = config.highlight.markup.split(","),
+	    		highlightQueryText = function(text) {
+		    		highlightedText = "";
+	    			matchedText = text.match(highlightRegExp);
+	    			if(matchedText && matchedText.length > 0) {
+	    				matchedText = singleValue ? matchedText[0].toLowerCase() : matchedText[0];
+	    				highlightedText = highlightTextMarkup[0] + matchedText + highlightTextMarkup[1];
+						text = text.replace(highlightRegExp, highlightedText);
+	    			}
+	    			return text;
+	    		};
+
+			$( config.jsonObjects ).each(function(index, item) {
+				var templateClone = $( "<div></div>" ).html( config.template ).html();
+					
 				if($.type(item) == "object") {
 					$.each(item, function(k, v) {
 						var templateKey = "{@:" + k + "}",
-						regEx = new RegExp(templateKey, "g");
+							escapeHighlightTemplateKey = "{!@:" + k + "}",
+							regEx = new RegExp(templateKey, "g"),
+							templateCloned = false;
 						
-						if(template.indexOf( templateKey ) != -1) {
-							templateClone = templateClone.replace( regEx, v );
+						if(config.template.indexOf( templateKey ) != -1) {
+							templateClone = templateClone.replace( regEx, config.highlight.apply ? highlightQueryText(v) : v );
+							templateCloned = true;
+						}
+						if(!templateCloned && config.template.indexOf( escapeHighlightTemplateKey ) != -1) {
+							templateClone = templateClone.replace( escapeHighlightTemplateKey, v );
 						}
 					});
 				}
-				else if(prop != null) {
-					var templateKey = "{@:" + prop + "}",
-					regEx = new RegExp(templateKey, "g");
+				else if(config.prop != null) {
+					var templateKey = "{@:" + config.prop + "}",
+						escapeHighlightTemplateKey = "{!@:" + config.prop + "}",
+						regEx = new RegExp(templateKey, "g"),
+						templateCloned = false;
 					
-					if(template.indexOf( templateKey ) != -1) {
-						templateClone = templateClone.replace( regEx, item );
+					if(config.template.indexOf( templateKey ) != -1) {
+						templateClone = templateClone.replace( regEx, config.highlight.apply ? highlightQueryText(item) : item );
+						templateCloned = true;
+					}
+					if(!templateCloned && config.template.indexOf( escapeHighlightTemplateKey ) != -1) {
+						templateClone = templateClone.replace( escapeHighlightTemplateKey, item );
 					}
 				}
 				constructedTemplate.push( templateClone );
