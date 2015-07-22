@@ -7,7 +7,7 @@
 	    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 	    <title>jquery-template-plugin</title>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.js"></script>
-		<script type="text/javascript" src="assets/jquery.template.plugin.js"></script>
+		<script type="text/javascript" src="assets/jquery.template.plugin.min.js"></script>
 		<style type="text/css">
 			tbody .vertical-align-top { vertical-align: top; }
 	   		span.required { color: red; }
@@ -33,6 +33,9 @@
 			.textArea100 { width: 98%; height: 100px; }
 			#output { overflow: auto; margin-top: 15px; padding: 5px; display: none; border: 1px solid #CCCCCC; }
 			#output .row { font-family: verdana; font-size: 12px; margin: 5px; padding: 2px; border: 1px solid #CCCCCC; }
+			.highlightConf {
+				display: none;
+			}
 	   	</style>
 	</head>
 	<body>
@@ -54,9 +57,10 @@
       		<section id="main_content" class="inner">
 				<h3 id="syntax">Plugin Syntax<span class="x-inline-block x-width-10px">&nbsp;</span><span style="font-size: 14px;">(<a href="#demo" onclick="javascript:void(0);">Demo</a>)</span></h3>
 				<div class="highlight">
-					<div class="syntax"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jsTemplate</span><span class="p">(</span><span class="s1">'template '</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">,</span> <span class="s1">'property'</span><span class="p">);</span></pre></div>
+					<div class="syntax"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jsTemplate</span><span class="p">(</span><span class="s1">config</span><span class="p">);</span></pre></div>
 				</div>
-				<h3 id="htmlTemplate">HTML Template<span class="x-inline-block x-width-10px">&nbsp;</span><span style="font-size: 14px;">(<a href="#demo" onclick="javascript:void(0);">Demo</a>)</span></h3>
+				The config can have the below properties:
+				<h3 id="htmlTemplate">htmlTemplate<span class="x-inline-block x-width-10px">&nbsp;</span><span style="font-size: 14px;">(<a href="#demo" onclick="javascript:void(0);">Demo</a>)</span></h3>
 				This is a simple HTML that would consist of markup's known as template tags. A template tag can be as simple as {@:name}
 				(where 'name' is one of the properties in the json object)
 				<br/>
@@ -64,9 +68,9 @@
 				<div class="highlight">
 					<div class="syntax"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"{@:id}"</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;&lt;div&gt;</span><span class="s">{@:name}</span></span><span class="nt">&lt;/div&gt;&lt;div&gt;</span><span class="s">{@:email}</span><span class="nt">&lt;/div&gt;&lt;/div&gt;</span></pre></div>
 				</div>
-				<h3 id="templateDate">Data - (JSON or Array)<span class="x-inline-block x-width-10px">&nbsp;</span><span style="font-size: 14px;">(<a href="#demo" onclick="javascript:void(0);">Demo</a>)</span></h3>
+				<h3 id="templateData">jsonObjects - (JSON or Array)<span class="x-inline-block x-width-10px">&nbsp;</span><span style="font-size: 14px;">(<a href="#demo" onclick="javascript:void(0);">Demo</a>)</span></h3>
 				The data passed in can either be a simple JSON or an Array.
-				<br/>
+				<br/><br/>
 				Data as a simple JSON could look as below:
 <div class="highlight"><pre><span class="p">{</span>
     <span class="p">{</span>
@@ -87,15 +91,27 @@
     <span class="p">.</span>
 <span class="p">}</span>
 </pre></div>
+<br/>
 				Data as an Array could look as below:
 				<div class="highlight">
 					<div class="syntax"><pre><span class="p">[</span><span class="s2">"User One"</span><span class="p">,</span> <span class="s2">"User Two"</span><span class="p">,</span> <span class="s2">"User Three"</span><span class="p">,</span> <span class="p">...</span> <span class="s2">"User N"</span><span class="p">]</span></pre></div>
 				</div>
-				<h3 id="templateProperty">Property (optional)<span class="x-inline-block x-width-10px">&nbsp;</span><span style="font-size: 14px;">(<a href="#demo" onclick="javascript:void(0);">Demo</a>)</span></h3>
+				<h3 id="highlightProperty">highlight (optional)<span class="x-inline-block x-width-10px">&nbsp;</span><span style="font-size: 14px;">(<a href="#demo" onclick="javascript:void(0);">Demo</a>)</span></h3>
+				This is an optional property for highligting the text in the constructed HTML using the template.
+				<br/><br/>
+				It has the following default construct:
+<div class="highlight"><pre><span class="p"><span class="s2">"highlight"</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">"apply"</span><span class="o">:</span> <span class="mi">false</span><span class="p">,</span>
+    <span class="s2">"markup"</span><span class="o">:</span> <span class="s2">"&lt;u&gt;,&lt;/u&gt;"</span><span class="p">,</span>
+    <span class="s2">"value"</span><span class="o">:</span> <span class="s2">""</span>
+<span class="p">}</span>
+</pre></div>
+
+				<h3 id="templateProperty">property (optional)<span class="x-inline-block x-width-10px">&nbsp;</span><span style="font-size: 14px;">(<a href="#demo" onclick="javascript:void(0);">Demo</a>)</span></h3>
 				This is an optional property that has to be used if the passed in data is an Array of string.
 				This is nothing but an indication as to which template tag needs to be replaced with the values
 				of the Array.
-				<br/>
+				<br/><br/>
 				If the template being passed in is as below:
 				<div class="highlight">
 					<div class="syntax"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;&lt;div&gt;</span><span class="s">{@:name}</span><span class="nt">&lt;/div&gt;&lt;/div&gt;</span></pre></div>
@@ -110,35 +126,47 @@
 				<h3 id="templateExample">Examples<span class="x-inline-block x-width-10px">&nbsp;</span><span style="font-size: 14px;">(<a href="#demo" onclick="javascript:void(0);">Demo</a>)</span></h3>
 				Example-1: JSON as input data.
 <div class="highlight">
-	<div class="syntax"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jsTemplate</span><span class="p">(</span><span class="s1">'&lt;div class="row"&gt;&lt;div&gt;{@:name}&lt;/div&gt;&lt;div&gt;{@:email}&lt;/div&gt;&lt;/div&gt;'</span><span class="p">,</span> <span class="p">{</span>
-	    <span class="p">{</span>
-	        <span class="s2">"id"</span><span class="o">:</span> <span class="mi">12345</span><span class="p">,</span>
-	        <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"User One"</span><span class="p">,</span>
-	        <span class="s2">"email"</span><span class="o">:</span> <span class="s2">"user.one@email.com"</span>
-	    <span class="p">},{</span>
-	        <span class="s2">"id"</span><span class="o">:</span> <span class="mi">23456</span><span class="p">,</span>
-	        <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"User Two"</span><span class="p">,</span>
-	        <span class="s2">"email"</span><span class="o">:</span> <span class="s2">"user.two@email.com"</span>
-	    <span class="p">},{</span>
-	        <span class="s2">"id"</span><span class="o">:</span> <span class="mi">34567</span><span class="p">,</span>
-	        <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"User Three"</span><span class="p">,</span>
-	        <span class="s2">"email"</span><span class="o">:</span> <span class="s2">"user.three@email.com"</span>
-	    <span class="p">}</span>
-	<span class="p">});</span>
+	<div class="syntax"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jsTemplate</span><span class="p">(</span><span class="p">{</span>
+  <span class="s2">"template"</span><span class="o">:</span> <span class="s1">'&lt;div class="row"&gt;&lt;div&gt;{@:name}&lt;/div&gt;&lt;div&gt;{@:email}&lt;/div&gt;&lt;/div&gt;'</span><span class="p">,</span>
+  <span class="s2">"jsonObjects"</span><span class="o">:</span> <span class="p">[</span><span class="p">{</span>
+    <span class="s2">"id"</span><span class="o">:</span> <span class="mi">12345</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"User One"</span><span class="p">,</span>
+    <span class="s2">"email"</span><span class="o">:</span> <span class="s2">"user.one@email.com"</span>
+  <span class="p">},{</span>
+    <span class="s2">"id"</span><span class="o">:</span> <span class="mi">23456</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"User Two"</span><span class="p">,</span>
+    <span class="s2">"email"</span><span class="o">:</span> <span class="s2">"user.two@email.com"</span>
+  <span class="p">},{</span>
+    <span class="s2">"id"</span><span class="o">:</span> <span class="mi">34567</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="o">:</span> <span class="s2">"User Three"</span><span class="p">,</span>
+    <span class="s2">"email"</span><span class="o">:</span> <span class="s2">"user.three@email.com"</span>
+  <span class="p">}],</span>
+  <span class="s2">"highlight"</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">"apply"</span><span class="o">:</span> <span class="mi">false</span><span class="p">,</span>
+    <span class="s2">"markup"</span><span class="o">:</span> <span class="s2">"&lt;u&gt;,&lt;/u&gt;"</span><span class="p">,</span>
+    <span class="s2">"value"</span><span class="o">:</span> <span class="s2">""</span>
+  <span class="p">}</span>
+<span class="p">});</span>
 	</pre></div>
 </div>
-				<br/>
-				Example-2: Array of string as input data.
-				<div class="highlight">
-					<div class="syntax"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jsTemplate</span><span class="p">(</span><span class="s1">'&lt;div class="row"&gt;&lt;div&gt;{@:name}&lt;/div&gt;&lt;/div&gt;'</span><span class="p">,</span> <span class="p">[</span><span class="s2">"User One"</span><span class="p">,</span> <span class="s2">"User Two"</span><span class="p">,</span> <span class="s2">"User Three"</span><span class="p">,</span> <span class="p">...</span> <span class="s2">"User N"</span><span class="p">,</span> <span class="s1">'name'</span><span class="p">]);</span></pre></div>
-				</div>
+<br/>
+Example-2: Array of string as input data.
+<div class="highlight">
+	<div class="syntax"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">jsTemplate</span><span class="p">(</span><span class="p">{</span>
+  <span class="s2">"template"</span><span class="o">:</span> <span class="s1">'&lt;div class="row"&gt;&lt;div&gt;{@:name}&lt;/div&gt;&lt;/div&gt;'</span><span class="p">,</span>
+  <span class="s2">"jsonObjects"</span><span class="o">:</span> <span class="p">[</span><span class="s2">"User One"</span><span class="p">,</span> <span class="s2">"User Two"</span><span class="p">,</span> <span class="s2">"User Three"</span><span class="p">,</span> <span class="p">...</span> <span class="s2">"User N"</span><span class="p">]</span>
+  <span class="s2">"prop"</span><span class="o">:</span> <span class="p"><span class="s2">"name"</span></span>
+<span class="p">});</span></pre></div>
+</div>
 				<br/><br/>
 				<div id="demo">
-					<div class="x-float-right x-inline-block"><a href="#templateProperty" onclick="javascript:void(0);">Property</a></div>
+					<div class="x-float-right x-inline-block"><a href="#templateProperty" onclick="javascript:void(0);">prop</a></div>
 					<div class="x-float-right x-inline-block">&nbsp;/&nbsp;</div>
-					<div class="x-float-right x-inline-block"><a href="#templateDate" onclick="javascript:void(0);">Data</a></div>
+					<div class="x-float-right x-inline-block"><a href="#highlightProperty" onclick="javascript:void(0);">highlight</a></div>
 					<div class="x-float-right x-inline-block">&nbsp;/&nbsp;</div>
-					<div class="x-float-right x-inline-block"><a href="#htmlTemplate" onclick="javascript:void(0);">HTML Template</a></div>
+					<div class="x-float-right x-inline-block"><a href="#templateData" onclick="javascript:void(0);">jsonObjects</a></div>
+					<div class="x-float-right x-inline-block">&nbsp;/&nbsp;</div>
+					<div class="x-float-right x-inline-block"><a href="#htmlTemplate" onclick="javascript:void(0);">htmlTemplate</a></div>
 					<div class="x-float-right x-inline-block">&nbsp;/&nbsp;</div>
 					<div class="x-float-right x-inline-block"><a href="#syntax" onclick="javascript:void(0);">Syntax</a></div>
 				</div>	
@@ -158,6 +186,27 @@
 							<td class="input-label text inputBorder">Data:</td>
 							<td class="input-field text inputBorder">
 								<textarea id="template-data" class="textArea100" name="template-data">[{"category": "reference","author": "Nigel Rees","title": "Sayings of the Century","price": 8.95},{"category": "fiction","author": "Evelyn Waugh","title": "Sword of Honour","price": 12.99},{"category": "fiction","author": "Herman Melville","title": "Moby Dick","isbn": "0-553-21311-3","price": 8.99},{"category": "fiction","author": "J. R. R. Tolkien","title": "The Lord of the Rings","isbn": "0-395-19395-8","price": 22.99}]</textarea>
+							</td>
+						</tr>
+						<tr class="input-row">
+							<td class="input-label text inputBorder">Highlight (optional):</td>
+							<td class="input-field text inputBorder">
+								<input id="highlight" type="checkbox" name="highlight"/>Enable
+								<span class="input-label">Default: false</span>
+							</td>
+						</tr>
+						<tr class="input-row highlightConf">
+							<td class="input-label text inputBorder">Markup (optional):</td>
+							<td class="input-field text inputBorder">
+								<input id="markup" type="text" value="<u>,</u>" />
+								<span class="input-label">Default: &lt;u&gt;,&lt;/u&gt;</span>
+							</td>
+						</tr>
+						<tr class="input-row highlightConf">
+							<td class="input-label text inputBorder">Values (optional):</td>
+							<td class="input-field text inputBorder">
+								<input id="highlightValue" type="text" value="" />
+								<span class="input-label">Default: ""</span>
 							</td>
 						</tr>
 						<tr class="input-row">
@@ -195,9 +244,22 @@
 					data = $.parseJSON( $( '#template-data' ).val() ),
 					property = $( '#property' ).val(),
 					result = null,
-					html = '';
+					html = '',
+					highlightConfig = null;
 				
-				result = $.fn.jsTemplate( template, data, property );
+				if($( "#highlight" ).is( ":checked" )) {
+					highlightConfig = {
+						apply: true,
+						markup: $( "#markup" ).val(),
+						value: $( "#highlightValue" ).val() !== "" ? $( "#highlightValue" ).val().split(",") : ""
+					};
+				}
+				result = $.fn.jsTemplate( {
+					'template': template,
+					'jsonObjects': data,
+					'highlight': highlightConfig,
+					'prop': property
+				} );
 				
 				$( result ).each(function(index) {
 					html += result[index];
@@ -205,6 +267,10 @@
 				
 				$( '#output' ).html( html ).show( 'fast' );
 				$( '#btn-clear' ).attr( 'disabled', false );
+			});
+
+			$( "#highlight" ).on( "click", function() {
+				$( ".highlightConf" )[$( this ).is( ":checked" ) ? "show" : "hide"]();
 			});
 			$( '#btn-clear' ).click(function() {
 				$( '#output' ).html( '' ).hide( 'slow' );
