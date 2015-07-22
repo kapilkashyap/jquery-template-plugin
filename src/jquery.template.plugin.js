@@ -35,6 +35,11 @@
 				value: ""
 			}, config.highlight || {});
 
+			// join all the values to be highlighted
+			if(config.highlight && config.highlight.value && config.highlight.value.join) {
+				config.highlight.value = config.highlight.value.join("|");
+			}
+
 			var constructedTemplate = [],
 				matchedText = null,
 	    		highlightedText = null,
@@ -43,6 +48,7 @@
 	    		highlightRegExp = new RegExp(escapedRegExp, "ig"),
 	    		highlightTextMarkup = config.highlight.markup.split(","),
 	    		highlightQueryText = function(text) {
+	    			text = "" + text;
 		    		highlightedText = "";
 	    			matchedText = text.match(highlightRegExp);
 	    			if(matchedText && matchedText.length > 0) {
